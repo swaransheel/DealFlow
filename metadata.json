@@ -1,0 +1,8 @@
+{
+  "name": "DealFlow Dashboard",
+  "description": "A comprehensive prospect intelligence dashboard that transforms raw contact data into actionable sales opportunities with AI-powered scoring and real-time alerts.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ]
+}

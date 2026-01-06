@@ -1,42 +1,51 @@
 
-export enum ProspectStatus {
-  NEW = 'New Lead',
-  CONTACTED = 'Contacted',
-  QUALIFIED = 'Qualified',
-  MEETING_SCHEDULED = 'Meeting Scheduled',
-  OPPORTUNITY = 'Opportunity',
-  CLOSED_WON = 'Closed Won',
-  DISQUALIFIED = 'Disqualified'
-}
+import { z } from 'zod';
 
-export interface Prospect {
-  id: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  company: string;
-  title: string;
-  score: number;
-  status: ProspectStatus;
-  industry: string;
-  lastActivity: string;
-  phone?: string;
-}
+export const ProspectStatusSchema = z.enum([
+  'New Lead',
+  'Contacted',
+  'Qualified',
+  'Meeting Scheduled',
+  'Opportunity',
+  'Closed Won',
+  'Disqualified'
+]);
+
+export type ProspectStatus = z.infer<typeof ProspectStatusSchema>;
+
+export const ProspectSchema = z.object({
+  id: z.string(),
+  firstName: z.string(),
+  lastName: z.string(),
+  email: z.string().email(),
+  company: z.string(),
+  title: z.string(),
+  score: z.number().min(0).max(10),
+  status: ProspectStatusSchema,
+  industry: z.string(),
+  lastActivity: z.string(),
+  phone: z.string().optional(),
+  revenue: z.number().optional(),
+  techStack: z.array(z.string()).optional(),
+});
+
+export type Prospect = z.infer<typeof ProspectSchema>;
 
 export interface Alert {
   id: string;
   type: 'HOT' | 'MEDIUM' | 'INFO';
+  category: 'Job Change' | 'Funding' | 'Engagement' | 'Tech Update';
   title: string;
   description: string;
   timestamp: string;
   isReviewed: boolean;
 }
 
-export interface ActivityMetric {
-  label: string;
-  value: number;
-  target: number;
-  icon: string;
+export interface DailyMetrics {
+  calls: number;
+  emails: number;
+  meetings: number;
+  prospects: number;
 }
 
 export enum AppView {
